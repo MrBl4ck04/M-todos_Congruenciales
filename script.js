@@ -238,6 +238,20 @@ function gcd(a, b) {
     return a;
 }
 
+// Función para verificar si un número es primo
+function isPrime(num) {
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+    if (num % 2 === 0 || num % 3 === 0) return false;
+    
+    for (let i = 5; i * i <= num; i += 6) {
+        if (num % i === 0 || num % (i + 2) === 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Función para validar entradas del algoritmo lineal
 function validateLinearInputs(x0, k, c, p, d) {
     if (isNaN(x0) || isNaN(k) || isNaN(c) || isNaN(p) || isNaN(d)) {
@@ -252,6 +266,12 @@ function validateLinearInputs(x0, k, c, p, d) {
     
     if (d < 0 || d > 10 || !Number.isInteger(d)) {
         showModal('Error de Validación', 'El número de decimales debe ser un entero entre 0 y 10.');
+        return false;
+    }
+    
+    // Validación: C debe ser primo
+    if (c > 0 && !isPrime(c)) {
+        showModal('Error de Validación', 'C debe ser primo');
         return false;
     }
     
