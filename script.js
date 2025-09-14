@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Función para inicializar la navegación entre algoritmos
 function initializeNavigation() {
-    const navButtons = document.querySelectorAll('.nav-btn');
+    const navItems = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.algorithm-section');
     
-    navButtons.forEach(button => {
-        button.addEventListener('click', function() {
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
             const algorithm = this.getAttribute('data-algorithm');
             switchAlgorithm(algorithm);
         });
@@ -23,8 +23,8 @@ function initializeNavigation() {
 
 // Función para cambiar entre algoritmos
 function switchAlgorithm(algorithm) {
-    // Actualizar botones de navegación
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    // Actualizar items de navegación
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelector(`[data-algorithm="${algorithm}"]`).classList.add('active');
     
     // Actualizar secciones
@@ -228,6 +228,16 @@ function displayDerivedParamsMultiplicative(params) {
 }
 
 
+// Función para calcular el máximo común divisor (MCD)
+function gcd(a, b) {
+    while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
 // Función para validar entradas del algoritmo lineal
 function validateLinearInputs(x0, k, c, p, d) {
     if (isNaN(x0) || isNaN(k) || isNaN(c) || isNaN(p) || isNaN(d)) {
@@ -242,6 +252,16 @@ function validateLinearInputs(x0, k, c, p, d) {
     
     if (d < 0 || d > 10 || !Number.isInteger(d)) {
         showModal('Error de Validación', 'El número de decimales debe ser un entero entre 0 y 10.');
+        return false;
+    }
+    
+    // Calcular parámetros derivados para validación
+    const derivedParams = calculateDerivedParams(k, c, p);
+    const m = derivedParams.m;
+    
+    // Validación: C y M deben ser primos entre sí
+    if (c > 0 && gcd(c, m) !== 1) {
+        showModal('Error de Validación', `C (${c}) y M (${m}) deben ser primos entre sí para garantizar un período máximo. Su máximo común divisor es ${gcd(c, m)}.`);
         return false;
     }
     
