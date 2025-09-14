@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Números Aleatorios</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Generador de Números Aleatorios</h1>
+            <p class="subtitle">Algoritmos Lineal y Congruencial Multiplicativo</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <button class="nav-btn active" data-algorithm="lineal">Algoritmo Lineal</button>
+            <button class="nav-btn" data-algorithm="multiplicativo">Algoritmo Multiplicativo</button>
+        </nav>
+
+        <!-- Algoritmo Lineal Section -->
+        <section id="lineal-section" class="algorithm-section active">
+            <div class="form-container">
+                <h2>Algoritmo Lineal Congruencial</h2>
+                <form class="input-form">
+                    <div class="form-group">
+                        <label for="x0-lineal">X₀ (Semilla inicial):</label>
+                        <input type="number" id="x0-lineal" placeholder="Ej: 5" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="k-lineal">K (Parámetro):</label>
+                        <input type="number" id="k-lineal" placeholder="Ej: 3" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="c-lineal">C (Constante aditiva):</label>
+                        <input type="number" id="c-lineal" placeholder="Ej: 7" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="p-lineal">P (Parámetro):</label>
+                        <input type="number" id="p-lineal" placeholder="Ej: 16" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="d-lineal">D (Decimales):</label>
+                        <input type="number" id="d-lineal" placeholder="Ej: 4" min="0" max="10">
+                    </div>
+                    <div class="button-group">
+                        <button type="button" id="generate-lineal" class="btn btn-primary">Generar</button>
+                        <button type="button" id="clear-lineal" class="btn btn-secondary">Limpiar</button>
+                    </div>
+                </form>
+
+                <!-- Parámetros Calculados - Lineal -->
+                <div class="derived-params">
+                    <div class="params-grid">
+                        <div class="param-item">
+                            <span class="param-label">a =</span>
+                            <span id="a-value" class="param-value">-</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-label">c =</span>
+                            <span id="c-value" class="param-value">-</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-label">g =</span>
+                            <span id="g-value" class="param-value">-</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-label">m =</span>
+                            <span id="m-value" class="param-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table - Lineal -->
+            <div class="results-container">
+                <h3>Resultados</h3>
+                <div class="table-container">
+                    <table id="results-lineal" class="results-table">
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>Xi-1</th>
+                                <th>Operación</th>
+                                <th>Xi</th>
+                                <th>ri</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Algoritmo Multiplicativo Section -->
+        <section id="multiplicativo-section" class="algorithm-section">
+            <div class="form-container">
+                <h2>Algoritmo Multiplicativo Congruencial</h2>
+                <form class="input-form">
+                    <div class="form-group">
+                        <label for="x0-multiplicativo">X₀ (Semilla inicial):</label>
+                        <input type="number" id="x0-multiplicativo" placeholder="Ej: 5 (debe ser impar)" min="0">
+                        <small class="form-note">⚠️ La semilla debe ser impar para garantizar un período máximo</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="k-multiplicativo">K (Parámetro):</label>
+                        <input type="number" id="k-multiplicativo" placeholder="K para 3 + 8k" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="p-multiplicativo">P (Parámetro):</label>
+                        <input type="number" id="p-multiplicativo" placeholder="Ej: 16" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="d-multiplicativo">D (Decimales):</label>
+                        <input type="number" id="d-multiplicativo" placeholder="Ej: 4" min="0" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Fórmula para K:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="k-formula" value="3+8k" checked>
+                                <span>3 + 8k</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="k-formula" value="5+8k">
+                                <span>5 + 8k</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" id="generate-multiplicativo" class="btn btn-primary">Generar</button>
+                        <button type="button" id="clear-multiplicativo" class="btn btn-secondary">Limpiar</button>
+                    </div>
+                </form>
+
+                <!-- Parámetros Calculados - Multiplicativo -->
+                <div class="derived-params">
+                    <div class="params-grid">
+                        <div class="param-item">
+                            <span class="param-label">a =</span>
+                            <span id="a-value-multiplicativo" class="param-value">-</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-label">g =</span>
+                            <span id="g-value-multiplicativo" class="param-value">-</span>
+                        </div>
+                        <div class="param-item">
+                            <span class="param-label">m =</span>
+                            <span id="m-value-multiplicativo" class="param-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table - Multiplicativo -->
+            <div class="results-container">
+                <h3>Resultados</h3>
+                <div class="table-container">
+                    <table id="results-multiplicativo" class="results-table">
+                        <thead>
+                            <tr>
+                                <th>i</th>
+                                <th>Xi-1</th>
+                                <th>Operación</th>
+                                <th>Xi</th>
+                                <th>ri</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 Franz Carvajal - Generador de Números Aleatorios</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
