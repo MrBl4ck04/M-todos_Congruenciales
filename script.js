@@ -48,6 +48,50 @@ function initializeEventListeners() {
     document.querySelectorAll('input[name="k-formula"]').forEach(radio => {
         radio.addEventListener('change', updateKFormula);
     });
+    
+    // Event listeners para el modal
+    initializeModal();
+}
+
+// Función para inicializar el modal
+function initializeModal() {
+    const modal = document.getElementById('modal');
+    const closeBtn = document.querySelector('.modal-close');
+    const okBtn = document.getElementById('modal-ok');
+    
+    // Cerrar modal con X
+    closeBtn.addEventListener('click', closeModal);
+    
+    // Cerrar modal con botón Aceptar
+    okBtn.addEventListener('click', closeModal);
+    
+    // Cerrar modal haciendo clic fuera del contenido
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+            closeModal();
+        }
+    });
+}
+
+// Función para mostrar modal
+function showModal(title, message) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-message').textContent = message;
+    document.getElementById('modal').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Prevenir scroll del body
+}
+
+// Función para cerrar modal
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Restaurar scroll del body
 }
 
 // Función para actualizar la fórmula K en el algoritmo multiplicativo
@@ -90,7 +134,7 @@ function generateLinear() {
         displayResults('lineal', results);
         
     } catch (error) {
-        alert('Error al generar números aleatorios: ' + error.message);
+        showModal('Error', 'Error al generar números aleatorios: ' + error.message);
     }
 }
 
@@ -122,7 +166,7 @@ function generateMultiplicative() {
         displayResults('multiplicativo', results);
         
     } catch (error) {
-        alert('Error al generar números aleatorios: ' + error.message);
+        showModal('Error', 'Error al generar números aleatorios: ' + error.message);
     }
 }
 
@@ -187,17 +231,17 @@ function displayDerivedParamsMultiplicative(params) {
 // Función para validar entradas del algoritmo lineal
 function validateLinearInputs(x0, k, c, p, d) {
     if (isNaN(x0) || isNaN(k) || isNaN(c) || isNaN(p) || isNaN(d)) {
-        alert('Por favor, complete todos los campos con valores numéricos válidos.');
+        showModal('Error de Validación', 'Por favor, complete todos los campos con valores numéricos válidos.');
         return false;
     }
     
     if (x0 < 0 || k < 0 || c < 0 || p <= 0 || d < 0) {
-        alert('Los valores deben ser positivos (excepto C que puede ser 0).');
+        showModal('Error de Validación', 'Los valores deben ser positivos (excepto C que puede ser 0).');
         return false;
     }
     
     if (d < 0 || d > 10 || !Number.isInteger(d)) {
-        alert('El número de decimales debe ser un entero entre 0 y 10.');
+        showModal('Error de Validación', 'El número de decimales debe ser un entero entre 0 y 10.');
         return false;
     }
     
@@ -207,23 +251,23 @@ function validateLinearInputs(x0, k, c, p, d) {
 // Función para validar entradas del algoritmo multiplicativo
 function validateMultiplicativeInputs(x0, k, p, d) {
     if (isNaN(x0) || isNaN(k) || isNaN(p) || isNaN(d)) {
-        alert('Por favor, complete todos los campos con valores numéricos válidos.');
+        showModal('Error de Validación', 'Por favor, complete todos los campos con valores numéricos válidos.');
         return false;
     }
     
     if (x0 < 0 || k < 0 || p <= 0 || d < 0) {
-        alert('Los valores deben ser positivos.');
+        showModal('Error de Validación', 'Los valores deben ser positivos.');
         return false;
     }
     
     if (d < 0 || d > 10 || !Number.isInteger(d)) {
-        alert('El número de decimales debe ser un entero entre 0 y 10.');
+        showModal('Error de Validación', 'El número de decimales debe ser un entero entre 0 y 10.');
         return false;
     }
     
     // Validación específica para algoritmo multiplicativo: la semilla debe ser impar
     if (x0 % 2 === 0) {
-        alert('Para el algoritmo multiplicativo, la semilla (X₀) debe ser un número impar para garantizar un período máximo.');
+        showModal('Error de Validación', 'Para el algoritmo multiplicativo, la semilla (X₀) debe ser un número impar para garantizar un período máximo.');
         return false;
     }
     
@@ -372,7 +416,7 @@ function exportToCSV(algorithm) {
     const rows = Array.from(table.querySelectorAll('tbody tr'));
     
     if (rows.length === 0) {
-        alert('No hay datos para exportar.');
+        showModal('Error', 'No hay datos para exportar.');
         return;
     }
     
